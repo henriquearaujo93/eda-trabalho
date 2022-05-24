@@ -108,10 +108,11 @@ void printListJobs(ListJobs *list) {
 
             while (listJobsHead != NULL) {
 
-
                 printf("> Job: %d\n", listJobsHead->nJob);
 
                 listHead = listJobsHead->machineHead;
+
+                aux = FALSE;
 
                 if (listHead != NULL) {
 
