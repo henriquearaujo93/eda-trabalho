@@ -5,9 +5,13 @@
 
 int main() {
 
+    printf("TESTE\n");
+
     ListJobs *job = NULL;
 
     int opcao;
+    int jobToEdit, jobToRemove;
+    char c;
 
     readJob();
 
@@ -19,16 +23,64 @@ int main() {
         switch (opcao) {
 
             case 1: 
-            //TODO:
             system("clear");
             listJobs = insertJobsAtBegin(newJobInputs(), NULL, listJobs);
             menuOperations(listJobs);
             break; 
             case 2:
-            //TODO:
+            system("clear");    
+            printListJobs2(listJobs);
+            
+            if (listJobs == 0) {
+                printf("Nao existem jobs!\n");
+            } else {
+                do {
+                    printf("Insira o numero do job:");
+                    scanf("%d", &jobToRemove);
+
+                    if (verifyInputValues(jobToRemove) == FALSE) {
+                        printf("O numero tem de ser maior que 0\n");
+                    }
+
+                } while(jobToRemove == FALSE);
+            }
+            removeJob(jobToRemove, listJobs);
+            system("clear");
             break;
+
             case 3:
-            //TODO:
+            system("clear");
+            printListJobs2(listJobs);
+            if (listJobs == NULL) {
+                printf("Nao existem jobs!\n");
+            } else {
+                do {
+                    printf("Insira o numero do Job:");
+                    scanf("%d", &jobToEdit);
+
+                    if (verifyInputValues(jobToEdit) == FALSE) {
+                        printf("O numero tem de ser maior que 0\n");
+                    }
+                } while (jobToEdit == FALSE);
+            }
+
+                if (alterarJob(jobToEdit) == NULL) {
+                    printf("Nao existem jobs com o numero %d\n", jobToEdit);
+
+                    do {
+
+                        printf("Pression 'v' para voltar:");
+                        scanf(" %c", &c);
+
+                    } while (c != 'v' && c != 'V');
+
+                    system("clear");
+
+                } else {
+                    system("clear");
+                    menuOperations(alterarJob(jobToEdit));
+                }
+            
             break;
             case 4:
             system("clear");
@@ -36,15 +88,14 @@ int main() {
             system("clear");
             break;
             case 5:
-            //TODO:
+            //TODO: ESCALONAMENTO
             break;
-            case 6:
-            //TODO:
+            case 8: 
+            addTableJobs(); //ADD DATA COM JOBS DA TABELA
+            system("clear");
             break;
-            case 7:
-            //TODO:
-             default:
-             break;
+            default:
+            break;
         }
 
         if (opcao == 0) {
@@ -79,10 +130,12 @@ void menuOperations(ListJobs *job) {
             case 2:
                 system("clear");
 
-                if (listMachines == 0) {
+                //Listar operações do job
+                printListMachines2(job->machineHead);
+
+                if (job->machineHead == 0) {
                     printf("Nao existem operacoes!\n");
                 } else {
-
                     do {
                         printf("Insira o numero da operacao:");
                         scanf("%d", &operationToRemove);
@@ -94,14 +147,16 @@ void menuOperations(ListJobs *job) {
                     } while(operationToRemove == FALSE);
                 }
 
-                removeOperation(operationToRemove);
+                removeOperation(operationToRemove, job->machineHead);
                 system("clear");
                 break;
             case 3:
 
                 system("clear");
 
-                if (listMachines == NULL) {
+                printListMachines3(job->machineHead);
+
+                if (job->machineHead == NULL) {
                     printf("Nao existem operacoes!\n");
                 } else {
                     do {
@@ -114,47 +169,39 @@ void menuOperations(ListJobs *job) {
                     } while (operationToEdit == FALSE);
                 }
 
-                editOperation(operationToEdit);
+                system("clear");
+
+                editOperation(operationToEdit, job->machineHead);
                 system("clear");
                 
                 break;
             case 4:
                 system("clear");
-                minimumAmountOfTime();
+                minimumAmountOfTime(job->machineHead);
                 system("clear");
                 break;
             case 5:
                 system("clear");
-                maximumAmountOfTime();
+                maximumAmountOfTime(job->machineHead);
                 system("clear");
                 break;
             case 6:
                 system("clear");
-                averageOperationTime();
+                averageOperationTime(job->machineHead);
                 system("clear");
                 break;
             case 7:
                 system("clear");
-                printListMachines(listMachines);
+                printListMachines(job->machineHead);
                 system("clear");
                 break;
             case 8:
-                /*
-                listMachines = insertAtBegin(1, 1, 4, listMachines);
-                listMachines = insertAtBegin(1, 3, 5, listMachines);
-                listMachines = insertAtBegin(2, 2, 4, listMachines);
-                listMachines = insertAtBegin(2, 4, 5, listMachines);
-                listMachines = insertAtBegin(3, 3, 5, listMachines);
-                listMachines = insertAtBegin(3, 5, 6, listMachines);
-                listMachines = insertAtBegin(4, 4, 5, listMachines);
-                listMachines = insertAtBegin(4, 5, 5, listMachines);
-                listMachines = insertAtBegin(4, 6, 4, listMachines);
-                listMachines = insertAtBegin(4, 7, 5, listMachines);
-                listMachines = insertAtBegin(4, 8, 9, listMachines);
-                */
-                //saveJobFromList(listMachines);
+                //TODO: Adicionar maquina
                 system("clear");
-            
+                break;
+            case 8:
+                //TODO: Remover maquina
+                system("clear");
                 break;
             default:
                 break;

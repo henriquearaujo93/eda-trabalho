@@ -144,6 +144,50 @@ void printListMachines(ListMachines *list) {
     } while (option != 'v' && option != 'V');
 }   
 
+void printListMachines2(ListMachines *list) {   
+    ListMachines *listHead = list;
+    bool aux = FALSE;
+    char option;
+
+    while (listHead != NULL) {
+        if (aux == FALSE) {
+            printf("> Operacao: %d\n", listHead->nOperation);
+            aux = TRUE;
+        }
+        if (aux == TRUE) {
+            printf("    > maquina: %d, tempo: %d\n", listHead->nMachine, listHead->vTime);
+        }
+        if (listHead->proximo != NULL) {
+            if (listHead->nOperation != listHead->proximo->nOperation) {
+                aux = FALSE;
+            }
+        }
+        listHead = listHead->proximo;
+    }
+}
+
+void printListMachines3(ListMachines *list) {   
+    ListMachines *listHead = list;
+    bool aux = FALSE;
+    char option;
+
+    while (listHead != NULL) {
+        if (aux == FALSE) {
+            printf("> Operacao: %d\n", listHead->nOperation);
+            aux = TRUE;
+        }
+        if (listHead->proximo != NULL) {
+            if (listHead->nOperation != listHead->proximo->nOperation) {
+                aux = FALSE;
+            }
+        }
+        listHead = listHead->proximo;
+    }
+}   
+
+
+
+
 /**
  * @brief Listar todas as operações existentes
  * 
@@ -215,11 +259,12 @@ void freeListAv(ListAverageOp *list) {
  * 
  * @param nOperation 
  */
-void removeOperation(int nOperation) {
-  
+void removeOperation(int nOperation, ListMachines *machineHead) {
+
     ListMachines *previousNode = NULL;
     ListMachines *nodeToRemove = NULL;
-    ListMachines *listHead = listMachines;
+    ListMachines *listHead = machineHead;
+    ListMachines *listHead2 = NULL;
     bool removed = FALSE;
     char option;
                 
@@ -228,18 +273,19 @@ void removeOperation(int nOperation) {
         while (listHead != NULL && listHead->nOperation == nOperation) {
 
             nodeToRemove = listHead;
+            listHead2 = nodeToRemove->proximo;
             listHead = listHead->proximo;
             free(nodeToRemove);
             removed = TRUE;
         }
-
-        listMachines = listHead;
+        machineHead = listHead;
     } 
     else
     {
         while (listHead != NULL) {                                                                                                                 
             if (listHead->nOperation == nOperation) {
                 nodeToRemove = listHead;
+                listHead2 = nodeToRemove->proximo;
                 listHead = listHead->proximo;
                 previousNode->proximo = listHead;
                 free(nodeToRemove);
@@ -251,11 +297,15 @@ void removeOperation(int nOperation) {
         }
     }
 
+    //Loop para reordenar numero das operacoes
+    listHead = machineHead;
+    while (listHead != NULL && listHead->nOperation != (nOperation - 1)) {
+        listHead->nOperation = listHead->nOperation - 1;
+        listHead = listHead->proximo;
+    }
+
     if (removed == TRUE) {
         printf("Operacao n %d removida com sucesso!\n", nOperation);
-        remove("job.txt");
-        saveJobFromList(listMachines);
-    
     } else {
         printf("Nenhuma operacao foi removida!\n");
     }
@@ -272,9 +322,9 @@ void removeOperation(int nOperation) {
  * 
  * @param nOperation 
  */
-void editOperation(int nOperation) {
+void editOperation(int nOperation, ListMachines *listMachinesHead) {
 
-    ListMachines *listHead = listMachines;
+    ListMachines *listHead = listMachinesHead;
     char option;
     bool aux = FALSE;
     int newMachineNumber, newTimeNumber, machineToEdit;
@@ -315,7 +365,7 @@ void editOperation(int nOperation) {
                         printf("Valor invalido, insira um valor maior que 0\n");
                     }
 
-                    if (verifyIfMachineExistInOperation(nOperation, newMachineNumber, NULL) == TRUE && (listHead->nMachine != newMachineNumber)) {
+                    if (verifyIfMachineExistInOperation(nOperation, newMachineNumber, listMachinesHead) == TRUE && (listHead->nMachine != newMachineNumber)) {
                         printf("Maquina ja existe!\n");
                         aux = TRUE;
                     } else {
@@ -510,7 +560,6 @@ void printMenu(ListJobs *job) {
     printf("  [5] -> Quantidade maxima e listagem\n");
     printf("  [6] -> Quantidade media\n");
     printf("  [7] -> Ver operacoes\n");
-    printf("  [8] -> JOBS(parte 2)\n");
     printf("  [0] -> Voltar\n");
     printf("opcao: ");
 }
@@ -591,7 +640,7 @@ Todos os cálculos estção aqui:
  * @brief Percorre a lista principal e cria uma nova somente com as maquinas de menor tempo e apresenta o resultado;
  * 
  */
-void minimumAmountOfTime() {
+void minimumAmountOfTime(ListMachines *listMachines) {
 
     ListMachines *listHead = listMachines;
     ListMachines *aux = listMachines;
@@ -629,7 +678,7 @@ void minimumAmountOfTime() {
  * @brief Percorre a lista principal e cria uma nova somente com as maquinas de maior tempo e apresenta o resultado;
  * 
  */
-void maximumAmountOfTime() {
+void maximumAmountOfTime(ListMachines *listMachines) {
     ListMachines *listHead = listMachines;
     ListMachines *aux = listMachines;
     ListMachines *newList = NULL;
@@ -666,7 +715,7 @@ void maximumAmountOfTime() {
  * @brief Percorre a lista principal e cria uma nova somente com as as medias das operações;
  * 
  */
-void averageOperationTime() {
+void averageOperationTime(ListMachines *listMachines) {
     ListMachines *listHead = listMachines;
     ListAverageOp *newList = NULL;
 

@@ -23,6 +23,9 @@ bool verifyIfJobExist(int jobNumber);
 int newJobInputs();
 void printListJobs(ListJobs *list);
 void newMachineInputs(ListJobs *job);
-
+void addTableJobs();
+ListJobs *alterarJob(int nJob);
+void printListJobs2(ListJobs *list);
+void removeJob(int nJob, ListJobs *jobsHead);
 
 #endif
