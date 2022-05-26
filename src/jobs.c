@@ -407,3 +407,30 @@ void removeJob(int nJob, ListJobs *jobsHead) {
         scanf("%c", &option);
     } while (option != 'v' && option != 'V');
 }
+
+
+void saveJobOnTxt(ListJobs *list) {
+    ListJobs *listHead = list;
+    ListMachines *listMachineHead = NULL;
+
+
+    //j o m t
+
+    FILE *f = fopen("jobs.txt", "a");
+
+    while (listHead != NULL) {
+
+        listMachineHead = list->machineHead;
+
+        while (listMachineHead != NULL) {
+                
+            fprintf(f, "%d,%d,%d,%d\n", listHead->nJob, listMachineHead->nOperation, listMachineHead->nMachine, 
+                    listMachineHead->vTime);
+
+            listMachineHead = listMachineHead->proximo;
+        }
+
+        listHead = listHead->proximo;
+    }
+    fclose(f);
+}

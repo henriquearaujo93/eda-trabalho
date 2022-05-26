@@ -5,15 +5,13 @@
 
 int main() {
 
-    printf("TESTE\n");
-
     ListJobs *job = NULL;
 
     int opcao;
     int jobToEdit, jobToRemove;
     char c;
 
-    readJob();
+    //readJob();
 
     do {   
         jobMenu();
@@ -89,6 +87,9 @@ int main() {
             break;
             case 5:
             //TODO: ESCALONAMENTO
+            break;
+            case 6:
+            saveJobOnTxt(listJobs);
             break;
             case 8: 
             addTableJobs(); //ADD DATA COM JOBS DA TABELA

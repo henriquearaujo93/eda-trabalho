@@ -30,5 +30,6 @@ void removeJob(int nJob, ListJobs *jobsHead);
 void newMachineInputs2(int nOperation, ListJobs *job);
 void removeOperation(int nOperation, ListJobs *job);
 void removeMachine(int nMachine, int nOperationInput, ListJobs *job);
+void saveJobOnTxt(ListJobs *list);
 
 #endif
