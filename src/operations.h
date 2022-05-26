@@ -35,7 +35,7 @@ bool verifyInputValues(int input);
 //void newMachineInputs(ListMachines *listMachinesHead);
 bool verifyIfOperationExist(int operationNumber, ListMachines *listMachineHead);
 bool verifyIfMachineExistInOperation(int operationNumber, int machineNumber, ListMachines *listMachinesHead);
-void removeOperation(int nOperation, ListMachines *machineHead);
+//void removeOperation(int nOperation, ListMachines *machineHead);
 void editOperation(int nOperation, ListMachines *listMachinesHead);
 void printOperationMachines(ListMachines *list, int nOperation);
 void minimumAmountOfTime(ListMachines *listMachines);
@@ -52,6 +52,9 @@ void readJob();
 void saveJobFromList(ListMachines *list);
 void printListMachines2(ListMachines *list);
 void printListMachines3(ListMachines *list);
+//void removeMachine(int nMachine, int nOperationInput, ListMachines *machineHead);
+bool printListMachines4(int nOperation, ListMachines *list);
+ListMachines *insertAtBegin2(int nOperation, int nMachine, int vTime, ListMachines *list);
 //-------------------------------------------------------------------------------PARTE 2
 
 

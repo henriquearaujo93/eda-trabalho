@@ -78,6 +78,21 @@ ListMachines *insertAtBegin(int nOperation, int nMachine, int vTime, ListMachine
     }
 }
 
+ListMachines *insertAtBegin2(int nOperation, int nMachine, int vTime, ListMachines *list) {
+    
+    ListMachines *new = (ListMachines *)malloc(sizeof(ListMachines));
+    
+    if (new != NULL && list->nOperation == nOperation) {
+        new->nOperation = nOperation;
+        new->nMachine = nMachine;
+        new->vTime = vTime;
+        new->proximo = list;
+        return(new);
+    } else {
+        return(list);
+    }
+}
+
 /**
  * @brief Adiciona uma nova operação com a media das maquinas
  * 
@@ -183,7 +198,30 @@ void printListMachines3(ListMachines *list) {
         }
         listHead = listHead->proximo;
     }
-}   
+}
+
+bool printListMachines4(int nOperation, ListMachines *list) {
+
+    ListMachines *listHead = list;
+    bool aux = FALSE;
+    char option;
+    bool result = FALSE;
+
+    while (listHead != NULL) {
+        if (listHead->nOperation == nOperation) {
+            printf("> machine: %d, tempo: %d\n", listHead->nMachine, listHead->vTime);
+            result = TRUE;
+        }
+        listHead = listHead->proximo;
+    }
+
+    if (result == FALSE) {
+        return FALSE;
+    } else {
+        return TRUE;
+    }
+
+}
 
 
 
@@ -259,11 +297,11 @@ void freeListAv(ListAverageOp *list) {
  * 
  * @param nOperation 
  */
-void removeOperation(int nOperation, ListMachines *machineHead) {
+void removeOperation(int nOperation, ListJobs *job) {
 
     ListMachines *previousNode = NULL;
     ListMachines *nodeToRemove = NULL;
-    ListMachines *listHead = machineHead;
+    ListMachines *listHead = job->machineHead;
     ListMachines *listHead2 = NULL;
     bool removed = FALSE;
     char option;
@@ -277,8 +315,8 @@ void removeOperation(int nOperation, ListMachines *machineHead) {
             listHead = listHead->proximo;
             free(nodeToRemove);
             removed = TRUE;
+            job->machineHead = listHead;
         }
-        machineHead = listHead;
     } 
     else
     {
@@ -298,7 +336,7 @@ void removeOperation(int nOperation, ListMachines *machineHead) {
     }
 
     //Loop para reordenar numero das operacoes
-    listHead = machineHead;
+    listHead = job->machineHead;
     while (listHead != NULL && listHead->nOperation != (nOperation - 1)) {
         listHead->nOperation = listHead->nOperation - 1;
         listHead = listHead->proximo;
@@ -560,6 +598,8 @@ void printMenu(ListJobs *job) {
     printf("  [5] -> Quantidade maxima e listagem\n");
     printf("  [6] -> Quantidade media\n");
     printf("  [7] -> Ver operacoes\n");
+    printf("  [8] -> Adicionar maquina\n");
+    printf("  [9] -> Remover maquina\n");
     printf("  [0] -> Voltar\n");
     printf("opcao: ");
 }
@@ -627,6 +667,60 @@ void newMachineInputs(ListJobs *job) {
         } while (opcao != 's' && opcao != 'S' && opcao != 'n' && opcao != 'N');
 
     } while(opcao == 's' || opcao == 'S');
+}
+
+
+/**
+ * @brief Remover máquina da lista de operações
+ * 
+ */
+void removeMachine(int nMachine, int nOperationInput, ListJobs *job) {
+    char opcao;
+
+    ListMachines *previousNode = NULL;
+    ListMachines *nodeToRemove = NULL;
+    ListMachines *listHead = job->machineHead;
+    bool removed = FALSE;
+    char option;
+                
+    if (listHead != NULL && listHead->nOperation == nOperationInput && listHead->nMachine == nMachine) {
+
+        while (listHead != NULL && listHead->nMachine == nMachine) {
+
+            nodeToRemove = listHead;
+            listHead = listHead->proximo;
+            free(nodeToRemove);
+            removed = TRUE;
+        }
+        job->machineHead = listHead;
+    } 
+    else
+    {
+        while (listHead != NULL) {                                                                                                                 
+            if (listHead->nMachine == nMachine && listHead->nOperation == nOperationInput) {
+                nodeToRemove = listHead;
+                listHead = listHead->proximo;
+                previousNode->proximo = listHead;
+                free(nodeToRemove);
+                removed = TRUE;
+            } else {
+                previousNode = listHead;
+                listHead = listHead->proximo;
+            }
+        }
+    }
+
+    if (removed == TRUE) {
+        printf("Maquina n %d removida com sucesso!\n", nMachine);
+    } else {
+        printf("Nenhuma maquina foi removida!\n");
+    }
+
+    printf("Pressione 'v' para voltar: ");
+
+    do {
+        scanf("%c", &option);
+    } while (option != 'v' && option != 'V');
 }
 
 /*-----  Calculos  ------------------------------------------------------------------------------------------------
@@ -840,4 +934,68 @@ void readJob() {
         }
         fclose(f);
     }
+}
+
+//Adicionar maquina
+void newMachineInputs2(int nOperation, ListJobs *job) {
+
+    char opcao;
+
+    system("clear");
+
+    do
+    {
+        printf("Numero operacao(> 0): ");
+        scanf("%d", &nOperationInput);
+
+        if (verifyInputValues(nOperationInput) == FALSE)
+        {
+            printf("Valor invalido!\n");
+        }
+            
+        if (verifyIfOperationExist(nOperationInput, job->machineHead) == TRUE) {
+            
+            printListMachines4(nOperation, job->machineHead);
+
+        }
+                
+    } while ((verifyInputValues(nOperationInput) == FALSE));
+
+    do {
+        system("clear");
+
+        do {
+            printf("Numero Maquina: ");
+            scanf("%d", &nMachineInput);
+
+            if (verifyInputValues(nMachineInput) == FALSE) {
+                printf("Valor invalido, insira um valor maior que 0\n");
+            } else if(verifyIfMachineExistInOperation(nOperationInput, nMachineInput, job->machineHead) == TRUE) {
+                printf("Maquina ja existe!\n");
+            }
+        } while ((verifyInputValues(nMachineInput) == FALSE) || (verifyIfMachineExistInOperation(nOperationInput, nMachineInput, job->machineHead) == TRUE));
+
+        do {
+            printf("Tempo: ");
+            scanf("%d", &vTimeInput);
+
+            if (verifyInputValues(vTimeInput) == FALSE)
+                printf("Valor invalido, insira um valor maior que 0\n ");
+
+        } while (verifyInputValues(vTimeInput) == FALSE);
+
+        job->machineHead = insertAtBegin2(nOperationInput, nMachineInput, vTimeInput, job->machineHead);
+
+        if (job->machineHead != NULL) {
+            printf("Nova maquina inserida com sucesso!\n");
+        } else {
+            printf("Erro ao inserir maquina!!");
+        }
+
+        do {
+            printf("Deseja inserir (s/n): ");
+            scanf(" %c", &opcao);
+        } while (opcao != 's' && opcao != 'S' && opcao != 'n' && opcao != 'N');
+
+    } while(opcao == 's' || opcao == 'S');
 }

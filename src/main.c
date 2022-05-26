@@ -111,7 +111,7 @@ int main() {
 
 void menuOperations(ListJobs *job) {
 
-    int operationToRemove;
+    int operationToRemove, machineToRemove;
     int operationToEdit;
 
     int opcao;
@@ -147,7 +147,7 @@ void menuOperations(ListJobs *job) {
                     } while(operationToRemove == FALSE);
                 }
 
-                removeOperation(operationToRemove, job->machineHead);
+                removeOperation(operationToRemove, job);
                 system("clear");
                 break;
             case 3:
@@ -198,9 +198,53 @@ void menuOperations(ListJobs *job) {
             case 8:
                 //TODO: Adicionar maquina
                 system("clear");
+
+                newMachineInputs2(nOperationInput, job);
+
+
+
                 break;
-            case 8:
-                //TODO: Remover maquina
+            case 9:
+                //Listar operações do job
+                system("clear");
+                printListMachines2(job->machineHead);
+
+                //Escolher Operacao
+                if (job->machineHead == 0) {
+                    printf("Nao existem operacoes!\n");
+                } else {
+
+                    do {
+
+                        printf("Insira o numero da operacao:");
+                        scanf("%d", &nOperationInput);
+
+                        if (verifyInputValues(nOperationInput) == FALSE) {
+                            printf("O numero tem de ser maior que 0\n");
+                        }
+
+                    } while (nOperationInput == FALSE);
+
+                    
+                    system("clear");
+
+                    if (printListMachines4(nOperationInput, job->machineHead) == TRUE) {
+                        do {
+                            printf("Insira o numero da Maquina:");
+                            scanf("%d", &machineToRemove);
+
+                            if (verifyInputValues(machineToRemove) == FALSE) {
+                                printf("O numero tem de ser maior que 0\n");
+                            }
+
+                        } while(machineToRemove == FALSE);
+
+                    } else {
+                        printf("Nao existem operacoes com o n %d\n", nOperationInput);
+                    }
+                }
+
+                removeMachine(machineToRemove, nOperationInput, job);
                 system("clear");
                 break;
             default:

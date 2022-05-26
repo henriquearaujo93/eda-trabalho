@@ -254,7 +254,7 @@ void addTableJobs() {
                         } else if (j == 3) {
                             listJobs->machineHead = insertAtBegin(j, 3, 4, listJobs->machineHead);
                             listJobs->machineHead = insertAtBegin(j, 4, 5, listJobs->machineHead);
-                            listJobs->machineHead = insertAtBegin(j, 5, 6, listJobs->machineHead);
+                            listJobs->machineHead = insertAtBegin(j, 6, 6, listJobs->machineHead);
                             listJobs->machineHead = insertAtBegin(j, 7, 7, listJobs->machineHead);
                         } else if (j == 4) {
                             listJobs->machineHead = insertAtBegin(j, 5, 3, listJobs->machineHead);
@@ -350,14 +350,12 @@ void printListJobs2(ListJobs *list) {
 
     ListJobs *listJobsHead = list;
 
-    if (listJobsHead != NULL) {
+    while (listJobsHead != NULL) {
 
-        while (listJobsHead != NULL) {
-
-            printf("> Job: %d\n", listJobsHead->nJob);
-            listJobsHead = listJobsHead->proximo;
-        }
+        printf("> Job: %d\n", listJobsHead->nJob);
+        listJobsHead = listJobsHead->proximo;
     }
+    
 }
 
 void removeJob(int nJob, ListJobs *jobsHead) {
@@ -377,7 +375,7 @@ void removeJob(int nJob, ListJobs *jobsHead) {
             free(nodeToRemove);
             removed = TRUE;
         }
-        jobsHead = listHead;
+        listJobs = listHead;
     } 
     else
     {
@@ -397,6 +395,7 @@ void removeJob(int nJob, ListJobs *jobsHead) {
 
     if (removed == TRUE) {
         printf("Job n %d removido com sucesso!\n", nJob);
+
     } else {
         printf("Nenhum job foi removido!\n");
     }
