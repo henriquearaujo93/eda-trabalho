@@ -17,6 +17,7 @@ void jobMenu() {
     printf("  [3] -> Editar Job\n");
     printf("  [4] -> Listar Jobs\n");
     printf("  [5] -> Proposta de escalonameto\n");
+    printf("  [6] -> Salvar!\n");
     printf("  [0] -> Sair\n");
     printf("opcao: ");
 }
