@@ -10,7 +10,7 @@ int nJobInput;
  */
 void jobMenu() {
     printf("--------------------------------------\n");
-    printf("---------------  JOB-MENU  -------------\n");
+    printf("---------------  JOB-MENU  -----------\n");
     printf("--------------------------------------\n");
     printf("  [1] -> Inserir um novo Job\n");
     printf("  [2] -> Remover Job\n");
@@ -18,6 +18,8 @@ void jobMenu() {
     printf("  [4] -> Listar Jobs\n");
     printf("  [5] -> Proposta de escalonameto\n");
     printf("  [6] -> Salvar!\n");
+    printf("  [7] -> Carregar process plan\n");
+    printf("  [8] -> Remover process plan\n");
     printf("  [0] -> Sair\n");
     printf("opcao: ");
 }
@@ -408,29 +410,112 @@ void removeJob(int nJob, ListJobs *jobsHead) {
     } while (option != 'v' && option != 'V');
 }
 
-
 void saveJobOnTxt(ListJobs *list) {
     ListJobs *listHead = list;
     ListMachines *listMachineHead = NULL;
+    char *jobName;
+    const char *extension = ".process";
+    char option;
 
+    if (listHead != NULL) {
 
-    //j o m t
+        printf("Insira o nome do process plan:");
+        scanf("%s", jobName);
 
-    FILE *f = fopen("jobs.txt", "a");
+        FILE *f = fopen(strcat(jobName, extension), "w");
 
-    while (listHead != NULL) {
+        while  (listHead != NULL) {
+            
+            listMachineHead = listHead->machineHead;
+    
+            while (listMachineHead != NULL) {
 
-        listMachineHead = list->machineHead;
+                fprintf(f, "%d,%d,%d,%d\n", listHead->nJob, listMachineHead->nOperation, listMachineHead->nMachine, listMachineHead->vTime);
 
-        while (listMachineHead != NULL) {
-                
-            fprintf(f, "%d,%d,%d,%d\n", listHead->nJob, listMachineHead->nOperation, listMachineHead->nMachine, 
-                    listMachineHead->vTime);
+                listMachineHead = listMachineHead->proximo;
+            }
 
-            listMachineHead = listMachineHead->proximo;
+            listHead = listHead->proximo;
         }
 
-        listHead = listHead->proximo;
+        fclose(f);
+
+        printf("Jobs salvos com sucesso!\n");
+        
+    } else {
+        printf("Não existem Jobs para serem guardados!\n");
     }
-    fclose(f);
+
+    printf("Pressione 'v' para voltar:"); 
+
+    do {
+        scanf("%c", &option);
+    } while (option != 'v' && option != 'V');
+
+    system("clear");
+}
+
+void loadJobsFromFile() {
+
+    int nJob, nOp, nMaq, vTime;
+    char fileName[20];
+    
+    char option;
+
+    if (listJobs == NULL) {
+
+        //Listar todos os ficheiros .process
+        system("ls *.process");
+
+        printf("Digite o nome do ficheiro: ");
+        scanf(" %s", fileName);
+
+        FILE *f = fopen(fileName, "r");
+
+        if(f == NULL) {
+            printf("Ficheiro nao encontrado\n");
+        } else {
+
+            while(!feof(f)) {
+
+                fscanf(f, "%d,%d,%d,%d\n", &nJob, &nOp, &nMaq, &vTime);
+
+                if(!verifyIfJobExist(nJob)) {
+                    listJobs = insertJobsAtBegin(nJob, NULL, listJobs);
+                }
+
+                listJobs->machineHead = insertAtBegin(nOp, nMaq, vTime, listJobs->machineHead);
+            }
+            printf("Jobs salvos com sucesso na memoria!\n");
+        }
+
+    } else {
+        printf("Ja existe um process plan na memoria, apagar existente antes de carregar um novo!\n");
+    }
+
+    printf("Pressione 'v' para voltar:");
+
+    do {
+        scanf("%c", &option);
+    } while (option != 'v' && option != 'V');
+
+    system("clear");
+}
+
+void freeListJobs(ListJobs *list) {
+    ListJobs *aux = NULL;
+    while (list != NULL) {
+        aux = list;
+        list = list->proximo;
+        free(aux);
+    }
+    listJobs = NULL;
+}
+
+
+//-> Maquinas não podem ser utilizadas ao mesmo tempo
+void escalonamento() {
+
+    printf("n consigo!!\n");
+
 }

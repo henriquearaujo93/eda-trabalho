@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "operations.h"
 
 typedef struct job { //Lista de jobs
@@ -31,5 +32,7 @@ void newMachineInputs2(int nOperation, ListJobs *job);
 void removeOperation(int nOperation, ListJobs *job);
 void removeMachine(int nMachine, int nOperationInput, ListJobs *job);
 void saveJobOnTxt(ListJobs *list);
+void loadJobsFromFile();
+void freeListJobs(ListJobs *list);
 
 #endif

@@ -9,7 +9,7 @@ int main() {
 
     int opcao;
     int jobToEdit, jobToRemove;
-    char c;
+    char c, opcao2;
 
     //readJob();
 
@@ -89,9 +89,27 @@ int main() {
             //TODO: ESCALONAMENTO
             break;
             case 6:
+            system("clear");
             saveJobOnTxt(listJobs);
             break;
-            case 8: 
+            case 7:
+            system("clear");
+            loadJobsFromFile();
+            break;
+            case 8:
+            system("clear");
+            freeListJobs(listJobs);
+            printf("Jobs eliminados com sucesso!\n");
+
+            do {
+
+                printf("Pressione 'v' para voltar:");
+                scanf(" %c", &opcao2);
+
+            } while (opcao2 != 'v' && opcao2 != 'V');
+
+            break;
+            case 9: 
             addTableJobs(); //ADD DATA COM JOBS DA TABELA
             system("clear");
             break;
@@ -199,11 +217,7 @@ void menuOperations(ListJobs *job) {
             case 8:
                 //TODO: Adicionar maquina
                 system("clear");
-
                 newMachineInputs2(nOperationInput, job);
-
-
-
                 break;
             case 9:
                 //Listar operações do job
