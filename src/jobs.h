@@ -13,6 +13,28 @@ typedef struct job { //Lista de jobs
     struct job *proximo;
 } ListJobs;
 
+typedef struct jobInfo {
+    int nJob;
+    int nOp;
+} ListJobInfo;
+
+//Operacoes para cada maquina do escalonamento
+typedef struct escOperation {
+    int nOperation;
+    int nJob;
+    int time;
+    int begin;
+    int end;
+    struct escOperation *proximo;
+}ListescOperation;
+
+//Lista de maquinas para escalonamento
+typedef struct escMachine {
+    int nMachine;
+    struct escOperation *escOperationHead;
+    struct escMachine *proximo;
+} ListescMachines;
+
 extern ListJobs *listJobs;
 
 //Assinaturas
@@ -34,5 +56,9 @@ void removeMachine(int nMachine, int nOperationInput, ListJobs *job);
 void saveJobOnTxt(ListJobs *list);
 void loadJobsFromFile();
 void freeListJobs(ListJobs *list);
+ListescMachines *criarListaMaquinas();
+bool verifyIfMachineEscExist(int nMachine, ListescMachines *list);
+ListescMachines *insertMachineEscAtBegin(int nMachine, ListescMachines *list);
+int escalonamento();
 
 #endif

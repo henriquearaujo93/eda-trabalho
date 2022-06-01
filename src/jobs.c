@@ -513,9 +513,87 @@ void freeListJobs(ListJobs *list) {
 }
 
 
-//-> Maquinas não podem ser utilizadas ao mesmo tempo
-void escalonamento() {
+//------------------------------------Escalonamento-------------------------------------------//
+ListescMachines *insertMachineEscAtBegin(int nMachine, ListescMachines *list) {
+    
+    ListescMachines *new = (ListescMachines *)malloc(sizeof(ListescMachines));
+    
+    if (new != NULL) {
+        new->nMachine = nMachine;
+        new->escOperationHead = NULL;
+        new->proximo = list;
+        return(new);
+    } else {
+        return(list);
+    }
+}
 
-    printf("n consigo!!\n");
+bool verifyIfMachineEscExist(int nMachine, ListescMachines *list) {
 
+    ListescMachines *listHead = list;
+
+    while (list != NULL) {
+
+        if (list->nMachine == nMachine) {
+            return TRUE;
+        }
+
+        list = list->proximo;
+    }
+}
+
+ListescMachines *criarListaMaquinas() {
+
+    int contador;
+    ListJobs *listHead = listJobs;
+    ListMachines *listMachineHead = NULL;
+    ListescMachines *listescMachines = NULL;
+
+    //Inserir a primeira maquina na lista
+    listescMachines = insertMachineEscAtBegin(listHead->machineHead->nMachine, listescMachines);
+
+    while (listHead != NULL) {
+
+        listMachineHead = listHead->machineHead;
+
+        while (listMachineHead != NULL) {
+
+            //Verificar se maquina existe
+            if (verifyIfMachineEscExist(listMachineHead->nMachine, listescMachines) == FALSE) {
+                listescMachines = insertMachineEscAtBegin(listMachineHead->nMachine, listescMachines);
+            }
+
+            listMachineHead = listMachineHead->proximo;
+        }
+
+        listHead = listHead->proximo;
+    }
+    return listescMachines;
+}
+
+
+int escalonamento() {
+    int contador = 0;
+    ListJobs *listJobsHead = listJobs;
+
+    //Criar lista com o numero de maquinas existentes no process plan
+    ListescMachines *listescMachines = criarListaMaquinas();
+
+    while (contador < 100) {
+
+        //Retornar o contador quando todos os jobs acabarem
+        if (listJobsHead == NULL) {
+            return contador;
+        }
+
+        
+
+
+
+
+
+
+        contador++;
+    }
+    
 }

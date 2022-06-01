@@ -86,7 +86,7 @@ int main() {
             system("clear");
             break;
             case 5:
-            //TODO: ESCALONAMENTO
+            escalonamento();
             break;
             case 6:
             system("clear");
