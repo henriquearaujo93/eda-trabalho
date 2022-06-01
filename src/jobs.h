@@ -13,11 +13,6 @@ typedef struct job { //Lista de jobs
     struct job *proximo;
 } ListJobs;
 
-typedef struct jobInfo {
-    int nJob;
-    int nOp;
-} ListJobInfo;
-
 //Operacoes para cada maquina do escalonamento
 typedef struct escOperation {
     int nOperation;
@@ -59,6 +54,7 @@ void freeListJobs(ListJobs *list);
 ListescMachines *criarListaMaquinas();
 bool verifyIfMachineEscExist(int nMachine, ListescMachines *list);
 ListescMachines *insertMachineEscAtBegin(int nMachine, ListescMachines *list);
-int escalonamento();
+void escalonamento();
+void removeOperation2(int nOperation, ListJobs *job);
 
 #endif

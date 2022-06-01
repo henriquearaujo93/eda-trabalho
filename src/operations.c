@@ -355,6 +355,52 @@ void removeOperation(int nOperation, ListJobs *job) {
     } while (option != 'v' && option != 'V');
 }
 
+void removeOperation2(int nOperation, ListJobs *job) {
+
+    ListMachines *previousNode = NULL;
+    ListMachines *nodeToRemove = NULL;
+    ListMachines *listHead = job->machineHead;
+    ListMachines *listHead2 = NULL;
+    bool removed = FALSE;
+    char option;
+                
+    if (listHead != NULL && listHead->nOperation == nOperation) {
+
+        while (listHead != NULL && listHead->nOperation == nOperation) {
+
+            nodeToRemove = listHead;
+            listHead2 = nodeToRemove->proximo;
+            listHead = listHead->proximo;
+            free(nodeToRemove);
+            removed = TRUE;
+            job->machineHead = listHead;
+        }
+    } 
+    else
+    {
+        while (listHead != NULL) {                                                                                                                 
+            if (listHead->nOperation == nOperation) {
+                nodeToRemove = listHead;
+                listHead2 = nodeToRemove->proximo;
+                listHead = listHead->proximo;
+                previousNode->proximo = listHead;
+                free(nodeToRemove);
+                removed = TRUE;
+            } else {
+                previousNode = listHead;
+                listHead = listHead->proximo;
+            }
+        }
+    }
+
+    //Loop para reordenar numero das operacoes
+    listHead = job->machineHead;
+    while (listHead != NULL && listHead->nOperation != (nOperation - 1)) {
+        listHead->nOperation = listHead->nOperation - 1;
+        listHead = listHead->proximo;
+    }
+}
+
 /**
  * @brief Recebe o número de uma operação e permite ao utilizador editar uma maquina da operação
  * 
