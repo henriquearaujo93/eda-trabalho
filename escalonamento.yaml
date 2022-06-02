@@ -1,4 +1,4 @@
-- 1:
+- Maquina 1:
 	- 31:
 		trabalho: 3
 		operacao: 1
@@ -34,7 +34,7 @@
 		operacao: 1
 		duracao: 1
 		fim: 1
-- 2:
+- Maquina 2:
 	- 12:
 		trabalho: 1
 		operacao: 1
@@ -55,7 +55,7 @@
 		operacao: 1
 		duracao: 4
 		fim: 4
-- 5:
+- Maquina 5:
 	- 21:
 		trabalho: 1
 		operacao: 1
@@ -76,7 +76,7 @@
 		operacao: 1
 		duracao: 5
 		fim: 5
-- 3:
+- Maquina 3:
 	- 21:
 		trabalho: 6
 		operacao: 1
@@ -107,7 +107,7 @@
 		operacao: 1
 		duracao: 3
 		fim: 3
-- 4:
+- Maquina 4:
 	- 23:
 		trabalho: 5
 		operacao: 1
@@ -143,7 +143,7 @@
 		operacao: 1
 		duracao: 5
 		fim: 6
-- 6:
+- Maquina 6:
 	- 23:
 		trabalho: 3
 		operacao: 1
@@ -159,7 +159,7 @@
 		operacao: 1
 		duracao: 5
 		fim: 17
-- 7:
+- Maquina 7:
 	- 23:
 		trabalho: 8
 		operacao: 1
@@ -180,7 +180,7 @@
 		operacao: 1
 		duracao: 6
 		fim: 11
-- 8:
+- Maquina 8:
 	- 16:
 		trabalho: 5
 		operacao: 1
@@ -196,3 +196,4 @@
 		operacao: 1
 		duracao: 8
 		fim: 8
+- TEMPO: 32

@@ -1,5 +1,6 @@
 #include "jobs.h"
 #include "operations.h"
+#include <stdio.h>
 
 ListJobs *listJobs = NULL;
 int nJobInput;
@@ -542,15 +543,15 @@ void saveJobOnTxt(ListJobs *list)
 {
     ListJobs *listHead = list;
     ListMachines *listMachineHead = NULL;
-    char *jobName;
+    char jobName[100];
     const char *extension = ".process";
-    char option;
+    char option3;
 
     if (listHead != NULL)
     {
 
         printf("Insira o nome do process plan:");
-        scanf("%s", jobName);
+        scanf(" %s", jobName);
 
         FILE *f = fopen(strcat(jobName, extension), "w");
 
@@ -579,12 +580,14 @@ void saveJobOnTxt(ListJobs *list)
         printf("Não existem Jobs para serem guardados!\n");
     }
 
-    printf("Pressione 'v' para voltar:");
+    fflush(stdin);
+
+    printf("Pressione 'v' para voltar: ");
 
     do
     {
-        scanf("%c", &option);
-    } while (option != 'v' && option != 'V');
+        scanf("%c", &option3);
+    } while (option3 != 'v' && option3 != 'V');
 
     system("clear");
 }
@@ -594,8 +597,6 @@ void loadJobsFromFile()
 
     int nJob, nOp, nMaq, vTime;
     char fileName[20];
-
-    char option;
 
     if (listJobs == NULL)
     {
@@ -635,11 +636,14 @@ void loadJobsFromFile()
         printf("Ja existe um process plan na memoria, apagar existente antes de carregar um novo!\n");
     }
 
-    printf("Pressione 'v' para voltar:");
+    printf("Pressione 'v' para voltar: ");
+
+    char option;
 
     do
     {
-        scanf("%c", &option);
+        scanf(" %c", &option);
+
     } while (option != 'v' && option != 'V');
 
     system("clear");
@@ -896,7 +900,6 @@ void escalonamento()
 
     while (listescMachines != NULL)
     {
-
         escOperationHead = listescMachines->escOperationHead;
 
         fprintf(f, "- Maquina %d:\n", listescMachines->nMachine);
@@ -912,8 +915,25 @@ void escalonamento()
 
         listescMachines = listescMachines->proximo;
     }
+
+    fprintf(f, "- TEMPO: %d\n", contador);
+
     fclose(f);
 
     system("clear");
     printf("TEMPO: %d\n", contador);
+
+    char opcao;
+
+    printf("Ficheiro de escalonamento salvo com sucesso!\n");
+
+    do {
+
+        printf("Pressione 'v' para voltar:");
+        scanf(" %c", &opcao);
+
+    } while (opcao != 'v' && opcao != 'V');
+
+    system("clear");
+
 }
